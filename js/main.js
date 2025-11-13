@@ -1,6 +1,6 @@
 // ====================================
-// SAWSTATUS - Main JavaScript
-// Sabiha Gokcen Airport Flight Tracker
+// IGASTATUS - Main JavaScript
+// Istanbul Airport Flight Tracker
 // ====================================
 
 (function() {
@@ -105,7 +105,7 @@
             }
         });
     }, {
-        rootMargin: '100px'
+        rootMargin: '200px'
     });
 
     // Observe all flight widgets
@@ -191,21 +191,20 @@
 
         if (!arrivalsElement || !departuresElement) return;
 
-        // Simulate flight counts (in production, fetch from API)
-        // SAW Airport handles approximately 200-250 flights per day
+        // Istanbul Airport handles approximately 500-600 flights per day
         const now = new Date();
         const hourOfDay = now.getHours();
 
         // Peak hours: 6-10 and 18-22
-        let baseFlights = 100;
+        let baseFlights = 250;
         if ((hourOfDay >= 6 && hourOfDay <= 10) || (hourOfDay >= 18 && hourOfDay <= 22)) {
-            baseFlights = 150;
+            baseFlights = 350;
         } else if (hourOfDay >= 0 && hourOfDay <= 5) {
-            baseFlights = 50;
+            baseFlights = 150;
         }
 
-        const arrivals = baseFlights + Math.floor(Math.random() * 20);
-        const departures = baseFlights + Math.floor(Math.random() * 20);
+        const arrivals = baseFlights + Math.floor(Math.random() * 50);
+        const departures = baseFlights + Math.floor(Math.random() * 50);
 
         animateValue(arrivalsElement, 0, arrivals, 2000);
         animateValue(departuresElement, 0, departures, 2000);
@@ -247,20 +246,18 @@
 
         if (!statusBadge || !statusText || !statusIcon) return;
 
-        // In production, this would fetch real status from an API
-        // For now, assume operational during normal hours
+        // Istanbul Airport operates 24/7, but activity varies
         const now = new Date();
         const hour = now.getHours();
 
-        // SAW operates 24/7, but activity varies
         if (hour >= 1 && hour <= 5) {
             statusText.textContent = 'Low Activity';
             statusIcon.textContent = '🌙';
-            statusBadge.style.background = 'linear-gradient(135deg, #f59e0b, #f97316)';
+            statusBadge.style.background = 'linear-gradient(135deg, #f39c12, #e67e22)';
         } else {
             statusText.textContent = 'Airport Operational';
             statusIcon.textContent = '✈️';
-            statusBadge.style.background = 'linear-gradient(135deg, #00c389, #00d896)';
+            statusBadge.style.background = 'linear-gradient(135deg, #e74c3c, #c0392b)';
         }
     }
 
@@ -326,24 +323,77 @@
     });
 
     // ====================================
-    // Service Worker Registration (Optional)
-    // ====================================
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            // Uncomment to enable service worker
-            // navigator.serviceWorker.register('/sw.js')
-            //     .then(registration => console.log('SW registered:', registration))
-            //     .catch(error => console.log('SW registration failed:', error));
-        });
-    }
-
-    // ====================================
     // Console Welcome Message
     // ====================================
-    console.log('%cSAWSTATUS', 'font-size: 24px; font-weight: bold; color: #00a9e0;');
-    console.log('%cSabiha Gökçen Airport Live Status', 'font-size: 14px; color: #6b7280;');
-    console.log('%cMade with ❤️ for Aviation Enthusiasts', 'font-size: 12px; color: #00c389;');
-    console.log('%cGitHub: https://github.com/igastatus/sawstatus-ai', 'font-size: 11px; color: #6b7280;');
+    console.log('%cIGASTATUS', 'font-size: 24px; font-weight: bold; color: #e74c3c;');
+    console.log('%cIstanbul Airport Live Status', 'font-size: 14px; color: #6b7280;');
+    console.log('%cMade with ❤️ for Aviation Enthusiasts', 'font-size: 12px; color: #f39c12;');
+    console.log('%cGitHub: https://github.com/igastatus/igastatus-ai', 'font-size: 11px; color: #6b7280;');
+
+    // ====================================
+    // Live Activity Dashboard
+    // ====================================
+    function updateActivityDashboard() {
+        const now = new Date();
+        const hour = now.getHours();
+
+        // Aircraft in air (simulated)
+        const aircraftInAir = Math.floor(15 + Math.random() * 15 + (hour >= 6 && hour <= 22 ? 10 : 0));
+        animateValue(document.getElementById('aircraft-in-air'), 0, aircraftInAir, 1500);
+
+        // Hourly arrivals/departures
+        let baseRate = 15;
+        if ((hour >= 6 && hour <= 10) || (hour >= 18 && hour <= 22)) baseRate = 28;
+        else if (hour >= 0 && hour <= 5) baseRate = 8;
+
+        const arrivals = baseRate + Math.floor(Math.random() * 8);
+        const departures = baseRate + Math.floor(Math.random() * 8);
+        animateValue(document.getElementById('hourly-arrivals'), 0, arrivals, 1500);
+        animateValue(document.getElementById('hourly-departures'), 0, departures, 1500);
+
+        // Wind (simulated)
+        const windSpeed = Math.floor(5 + Math.random() * 15);
+        const windDeg = Math.floor(Math.random() * 360);
+        animateValue(document.getElementById('wind-speed'), 0, windSpeed, 1500);
+
+        const windArrow = document.getElementById('wind-arrow');
+        if (windArrow) {
+            windArrow.style.transform = `translate(-50%, -100%) rotate(${windDeg}deg)`;
+        }
+
+        const windDir = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'][Math.floor(windDeg / 45)];
+        const windDirection = document.getElementById('wind-direction');
+        if (windDirection) windDirection.textContent = `Direction: ${windDir} (${windDeg}°)`;
+
+        // Active runways based on wind (SAW uses 24/06)
+        const runways = document.querySelectorAll('.runway');
+        runways.forEach(rw => rw.classList.remove('active'));
+
+        if (windDeg >= 90 && windDeg <= 270) {
+            // West wind - use runway 24
+            document.querySelectorAll('[data-runway="24"]').forEach(r => r.classList.add('active'));
+        } else {
+            // East wind - use runway 06
+            document.querySelectorAll('[data-runway="06"]').forEach(r => r.classList.add('active'));
+        }
+
+        // Terminal congestion
+        const congestionLevels = ['Low', 'Normal', 'Moderate', 'High'];
+        let congestionIndex = 1; // Normal
+        if ((hour >= 7 && hour <= 9) || (hour >= 17 && hour <= 19)) congestionIndex = 2;
+        else if (hour >= 0 && hour <= 5) congestionIndex = 0;
+
+        const congestionLevel = document.getElementById('congestion-level');
+        const congestionBar = document.getElementById('congestion-bar');
+        if (congestionLevel) congestionLevel.textContent = congestionLevels[congestionIndex];
+        if (congestionBar) congestionBar.style.width = `${(congestionIndex + 1) * 25}%`;
+    }
+
+    // Initial update
+    if (document.querySelector('.activity-dashboard')) {
+        updateActivityDashboard();
+        setInterval(updateActivityDashboard, 60000); // Update every minute
+    }
 
     // ====================================
     // Debug Mode
