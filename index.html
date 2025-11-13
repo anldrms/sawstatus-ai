@@ -21,11 +21,19 @@
     <link rel="dns-prefetch" href="https://www.liveatc.net">
     <link rel="dns-prefetch" href="https://widgets.skyscanner.net">
     <link rel="dns-prefetch" href="https://images.unsplash.com">
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com">
+    <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com">
+    <link rel="dns-prefetch" href="https://cdnjs.buymeacoffee.com">
 
     <link rel="preconnect" href="https://api.checkwx.com" crossorigin>
     <link rel="preconnect" href="https://fids.flightradar.live" crossorigin>
 
-    <link rel="stylesheet" href="css/style.css">
+    <!-- Preload critical CSS -->
+    <link rel="preload" href="css/style.min.css" as="style">
+    <link rel="stylesheet" href="css/style.min.css">
+
+    <!-- Preload critical JavaScript -->
+    <link rel="modulepreload" href="js/main.min.js">
 
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-B5MKS76S1B"></script>
@@ -77,7 +85,7 @@
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-background">
-            <img src="https://static0.simpleflyingimages.com/wordpress/wp-content/uploads/2023/12/matyas-rehak-pegasus-saw.jpg?q=70&fit=crop&w=1600&h=900&dpr=1" alt="Sabiha Gokcen Airport - Pegasus Airlines" loading="eager" decoding="async" fetchpriority="high">
+            <img src="https://static0.simpleflyingimages.com/wordpress/wp-content/uploads/2023/12/matyas-rehak-pegasus-saw.jpg?q=70&fit=crop&w=1600&h=900&dpr=1" alt="Sabiha Gokcen Airport - Pegasus Airlines" loading="eager" decoding="async" fetchpriority="high" width="1600" height="900">
         </div>
         <div class="hero-overlay"></div>
         <div class="hero-content">
@@ -361,6 +369,6 @@
     <!-- Buy Me a Coffee Widget -->
     <script data-name="BMC-Widget" data-cfasync="false" src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js" data-id="anldrms" data-description="Support me on Buy me a coffee!" data-message="Hi, I'm Anıl! I run igastatus.com and sawstatus.com with a passion for aviation. You can support me by buying a coffee! ☕✈️" data-color="#40DCA5" data-position="Right" data-x_margin="18" data-y_margin="18"></script>
 
-    <script src="js/main.js"></script>
+    <script src="js/main.min.js"></script>
 </body>
 </html>
